@@ -1,0 +1,12 @@
+{
+  "name": "rate-my-gm",
+  "displayName": "rate-my-gm",
+  "expo": {
+    "name": "rate-my-gm",
+    "slug": "rate-my-gm",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}

@@ -1,5 +1,5 @@
 apply plugin: "com.android.application"
-
+apply plugin: "com.google.gms.google-services"
 import com.android.build.OutputFile
 
 /**
@@ -83,6 +83,7 @@ project.ext.react = [
 
 apply from: '../../node_modules/react-native-unimodules/gradle.groovy'
 apply from: "../../node_modules/react-native/react.gradle"
+apply from: "../../node_modules/expo-constants/scripts/get-app-config-android.gradle"
 apply from: "../../node_modules/expo-updates/scripts/create-manifest-android.gradle"
 
 /**
@@ -131,11 +132,11 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.ratemygm"
+        applicationId 'com.ratemygm'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
-        versionName "1.0"
+        versionName "1.0.0"
     }
     splits {
         abi {
@@ -183,10 +184,12 @@ android {
 }
 
 dependencies {
+    implementation platform('com.google.firebase:firebase-bom:26.4.0')
     implementation fileTree(dir: "libs", include: ["*.jar"])
     //noinspection GradleDynamicVersion
     implementation "com.facebook.react:react-native:+"  // From node_modules
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
+    implementation 'com.google.firebase:firebase-analytics'
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
       exclude group:'com.facebook.fbjni'
     }

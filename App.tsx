@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, SafeAreaView } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
 import SearchBarGM from './app/components/SearchBarGM';
 import * as firebase from 'firebase';
 
@@ -7,6 +8,9 @@ import * as firebase from 'firebase';
 import "firebase/auth";
 import { User, Game } from './app/models/data.model';
 import APIUtils from './app/api/APIUtils';
+import Home from './app/screens/Home';
+import Profile from './app/screens/Profile';
+import { RootStack, HomeStack, TabsStack } from './app/Navigation';
 //import "firebase/database";
 //import "firebase/firestore";
 //import "firebase/functions";
@@ -89,15 +93,18 @@ export default function App() {
       </View>
     );
   }
-
   return (
-    <View>
-      <SearchBarGM></SearchBarGM>
-      <Text>Welcome {user.email}</Text>
-      <Text onPress={addUser}>
-        Add Player
-      </Text>
-    </View>
+    <NavigationContainer>    
+        <SearchBarGM></SearchBarGM>
+        <Text>Welcome {user.email}</Text>
+        <RootStack.Navigator initialRouteName="Home">
+          <RootStack.Screen
+            name="Main"
+            component={TabsStack}
+            options={{ headerShown: false }}
+          />
+        </RootStack.Navigator>    
+    </NavigationContainer>
   );  
 }
 

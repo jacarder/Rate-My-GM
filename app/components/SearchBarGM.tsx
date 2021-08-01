@@ -7,8 +7,7 @@ import _ from 'lodash';
 import { debounceTime, filter, distinctUntilChanged, mergeMap } from 'rxjs/operators';
 import { BehaviorSubject } from 'rxjs'
 import rxjsHelper from '../helpers/rxjs';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faStar } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesome } from '@expo/vector-icons';
 
 let searchSubject = new BehaviorSubject('');
 let searchResultObservable =  searchSubject.pipe(
@@ -42,7 +41,7 @@ const SearchBarGM = () => {
 			<ListItem.Title>{list.item.displayName}</ListItem.Title>
 			<ListItem.Subtitle>
 				{
-					Array.from(Array(list.item.rating)).map((star, i) => <FontAwesomeIcon key={i} icon={faStar} color="gold"/>)
+					Array.from(Array(list.item.rating)).map((star, i) => <FontAwesome key={i} name="star" color="gold"/>)
 				}
 			</ListItem.Subtitle>
 		</ListItem.Content>

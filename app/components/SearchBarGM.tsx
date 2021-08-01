@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, Props } from 'react';
 import { StyleSheet, SafeAreaView, FlatList } from "react-native";
 import { SearchBar, ListItem, Avatar } from "react-native-elements";
 import APIUtils from '../api/APIUtils';
@@ -8,6 +8,7 @@ import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { BehaviorSubject, iif, EMPTY } from 'rxjs'
 import rxjsHelper from '../helpers/rxjs';
 import { FontAwesome } from '@expo/vector-icons';
+import { navigate } from './../Navigation';
 
 let searchSubject = new BehaviorSubject('');
 
@@ -19,8 +20,9 @@ let searchResultObservable$ = searchSubject.pipe(
 	)
 );
 
+//	TODO get those types. No anys
 const SearchBarGM = () => {
-	
+
 	const [search, setSearch] = useState<string>('');
 	const [gmListResults, setGmListResults] = useState<User[]>([]);
 
@@ -36,18 +38,23 @@ const SearchBarGM = () => {
 		searchSubject.next(formatSearch);
 	};
 
+	const gotoGMScreen = (gmItem: User) => {
+		navigate('GameMaster', {gm: gmItem});
+		updateSearch('');
+	}
+
 	const renderGm = (list: {item: User}) => (
-		<ListItem bottomDivider >
-		<Avatar title={list.item.displayName} source={{ uri: list.item.picture.thumbnail}}/>
-		<ListItem.Content>
-			<ListItem.Title>{list.item.displayName}</ListItem.Title>
-			<ListItem.Subtitle>
-				{
-					Array.from(Array(list.item.rating)).map((star, i) => <FontAwesome key={i} name="star" color="gold"/>)
-				}
-			</ListItem.Subtitle>
-		</ListItem.Content>
-		<ListItem.Chevron />
+		<ListItem bottomDivider onPress={() => gotoGMScreen(list.item)}>
+			<Avatar title={list.item.displayName} source={{ uri: list.item.picture.thumbnail}}/>
+			<ListItem.Content>
+				<ListItem.Title>{list.item.displayName}</ListItem.Title>
+				<ListItem.Subtitle>
+					{
+						Array.from(Array(list.item.rating)).map((star, i) => <FontAwesome key={i} name="star" color="gold"/>)
+					}
+				</ListItem.Subtitle>
+			</ListItem.Content>
+			<ListItem.Chevron />
 		</ListItem>			
 	)
 

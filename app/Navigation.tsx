@@ -1,13 +1,20 @@
-import React from 'react';
+import { FontAwesome, FontAwesome5 } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createStackNavigator } from '@react-navigation/stack';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import { Icon } from 'react-native-elements';
-import Profile from './screens/Profile';
-import Home from './screens/Home';
 import { useTheme } from '@react-navigation/native';
-import { FontAwesome, FontAwesome5 } from '@expo/vector-icons'; 
+import { createStackNavigator } from '@react-navigation/stack';
+import React from 'react';
+import Home from './screens/Home';
+import Profile from './screens/Profile';
+import GameMaster from './screens/GameMaster';
 
+// TODO add typing
+//	Used to allow navigation outside of the stack
+//	Used to navigate from the list inside SearchBarGM
+export const navigationRef = React.createRef() as any;
+export function navigate(name: string, params: any) {
+  navigationRef.current?.navigate(name, params);
+}
+//	Create the stacks
 export const RootStack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 const HomeNav = createStackNavigator();
@@ -23,6 +30,11 @@ export const HomeStack = () => {
 		<HomeNav.Screen
 		  name="Profile"
 		  component={Profile}
+		/>
+		<HomeNav.Screen
+			name="GameMaster"
+			component={GameMaster}
+			options={{ headerShown: false }}
 		/>
 	  </HomeNav.Navigator>
 	);

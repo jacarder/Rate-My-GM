@@ -1,20 +1,22 @@
 import React, { useState } from 'react';
 import { StyleSheet, SafeAreaView, FlatList } from "react-native";
-import { SearchBar, ListItem, Card, Avatar } from "react-native-elements";
+import { SearchBar, ListItem, Avatar } from "react-native-elements";
 import APIUtils from '../api/APIUtils';
 import { User } from '../models/data.model';
 import _ from 'lodash';
-import { debounceTime, filter, distinctUntilChanged, mergeMap } from 'rxjs/operators';
-import { BehaviorSubject } from 'rxjs'
+import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
+import { BehaviorSubject, iif, EMPTY } from 'rxjs'
 import rxjsHelper from '../helpers/rxjs';
 import { FontAwesome } from '@expo/vector-icons';
 
 let searchSubject = new BehaviorSubject('');
-let searchResultObservable =  searchSubject.pipe(
-	filter(val => val.length > 1),
+
+let searchResultObservable$ = searchSubject.pipe(	
 	debounceTime(350),
 	distinctUntilChanged(),
-	mergeMap(val => APIUtils.getGMList(val))
+	switchMap(
+		(val) => iif(() => val.length > 1, APIUtils.getGMList(val), EMPTY)
+	)
 );
 
 const SearchBarGM = () => {
@@ -22,7 +24,7 @@ const SearchBarGM = () => {
 	const [search, setSearch] = useState<string>('');
 	const [gmListResults, setGmListResults] = useState<User[]>([]);
 
-	rxjsHelper.useObservable(searchResultObservable, setGmListResults);
+	rxjsHelper.useObservable(searchResultObservable$, setGmListResults);
 
 	const updateSearch = (searchText: string) => {
 		const formatSearch = searchText.toLowerCase();

@@ -1,16 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, SafeAreaView } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-import SearchBarGM from './app/components/SearchBarGM';
 import * as firebase from 'firebase';
-
 // Optionally import the services that you want to use
 import "firebase/auth";
-import { User, Game } from './app/models/data.model';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 import APIUtils from './app/api/APIUtils';
-import Home from './app/screens/Home';
-import Profile from './app/screens/Profile';
-import { RootStack, HomeStack, TabsStack } from './app/Navigation';
+import SearchBarGM from './app/components/SearchBarGM';
+import { Game, User } from './app/models/data.model';
+import { navigationRef, RootStack, TabsStack } from './app/Navigation';
+
 //import "firebase/database";
 //import "firebase/firestore";
 //import "firebase/functions";
@@ -94,10 +92,10 @@ export default function App() {
     );
   }
   return (
-    <NavigationContainer>    
+    <NavigationContainer ref={navigationRef}>
         <SearchBarGM></SearchBarGM>
         <Text>Welcome {user.email}</Text>
-        <RootStack.Navigator initialRouteName="Home">
+        <RootStack.Navigator initialRouteName="Main">
           <RootStack.Screen
             name="Main"
             component={TabsStack}
